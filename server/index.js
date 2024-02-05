@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const morgan = require("morgan");
 
 const app = express();
 
@@ -16,13 +17,14 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(morgan("combined"));
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
     extended: true,
   })
 );
-app.use("/", require("./controllers/signup"));
+app.use("/", require("./controllers/user"));
 
 app.listen(SERVER_PORT, () =>
   console.log("Server listening on port " + SERVER_PORT)

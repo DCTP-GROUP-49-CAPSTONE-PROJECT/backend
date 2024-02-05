@@ -4,16 +4,15 @@ const router = express.Router();
 const user = require("../services/user");
 
 router.post("/signup", async (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
+  const { fullName, email, password } = req.body;
 
-  if (!firstName || !lastName || !email || !password) {
+  if (!fullName || !email || !password) {
     res.status(400).json({
       error: "one or more field is not filled",
     });
   } else {
     const data = {
-      firstName: firstName,
-      lastName: lastName,
+      fullName: fullName,
       email: email,
       password: password,
     };

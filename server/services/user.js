@@ -3,12 +3,14 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
 // creates a new user
-const create = async ({ firstName, lastName, email, password }) => {
+const create = async ({ fullName, email, password }) => {
   try {
+    if (await User.findOne({ email: email })) {
+      return [false, "user already exists, kindly log in."];
+    }
     const hash = await bcrypt.hash(password, saltRounds);
     const user = new User({
-      firstName: firstName,
-      lastName: lastName,
+      fullName: fullName,
       email: email,
       password: hash,
     });

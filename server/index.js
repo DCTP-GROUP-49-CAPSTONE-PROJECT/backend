@@ -1,11 +1,42 @@
 require("dotenv").config();
 const express = require("express");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 
 const app = express();
 
 const SERVER_PORT = process.env.PORT;
-const HOST = process.env.HOST;
+const MONGODB_URI = process.env.MONGODB_URI;
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
+
+app.use(bodyParser.json());
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
+app.use("/", require("./controllers/signup"));
 
 app.listen(SERVER_PORT, () =>
   console.log("Server listening on port " + SERVER_PORT)
 );
+
+mongoose.set("bufferCommands", false);
+
+(async () => {
+  try {
+    await mongoose.connect(MONGODB_URI, {
+      socketTimeoutMS: 1000,
+    });
+    console.log(`connected to db @ ${process.env.MONGODB_URI}`);
+  } catch (error) {
+    console.log(error);
+  }
+})();

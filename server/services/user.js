@@ -22,6 +22,16 @@ const create = async ({ fullName, email, password }) => {
   }
 };
 
+// validate user login request
+const validate = async ({ email, password }) => {
+  const isValidUser = await User.findOne({ email: email });
+  if (isValidUser) {
+    return await bcrypt.compare(password, isValidUser.password);
+  }
+  return false;
+};
+
 module.exports = {
   create,
+  validate,
 };

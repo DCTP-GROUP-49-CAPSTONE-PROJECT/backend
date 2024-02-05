@@ -26,4 +26,35 @@ router.post("/signup", async (req, res) => {
   }
 });
 
+router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    res.status(401).json(
+      JSON.stringify({
+        error: "email or  pasword must not be empty",
+      })
+    );
+  } else {
+    const data = {
+      email: email,
+      password: password,
+    };
+    const findUser = await user.validate(data);
+
+    if (findUser) {
+      res.status(200).json(
+        JSON.stringify({
+          success: "user validated",
+        })
+      );
+    } else {
+      res.status(401).json(
+        JSON.stringify({
+          error: "invalid email or password ",
+        })
+      );
+    }
+  }
+});
+
 module.exports = router;

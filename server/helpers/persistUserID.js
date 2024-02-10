@@ -1,10 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 
-const idFilePath = path.join(__dirname, "userId.txt");
-
 const saveIdTofile = (idText) => {
-  fs.writeFile(idFilePath, idText, "utf8", (err) => {
+  fs.writeFile("userId.txt", idText, "utf8", (err) => {
     if (err) {
       console.log(err);
     }
@@ -12,7 +10,7 @@ const saveIdTofile = (idText) => {
 };
 
 const readIdFromFile = () => {
-  const data = fs.readFileSync(idFilePath, "utf8", (err, data) => {
+  const data = fs.readFileSync("userId.txt", "utf8", (err, data) => {
     if (err) {
       console.log(err);
     }
@@ -22,7 +20,7 @@ const readIdFromFile = () => {
 };
 
 const removeIdFile = () => {
-  fs.unlink(idFilePath, (err) => {
+  fs.unlink("userId.txt", (err) => {
     if (err) {
       console.log(console.error());
     }

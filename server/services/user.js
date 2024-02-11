@@ -57,6 +57,8 @@ const updateDetails = async ({
   genoType,
   address,
   phoneNumber,
+  avatar,
+  role,
 }) => {
   try {
     const update = await User.updateOne(
@@ -69,6 +71,8 @@ const updateDetails = async ({
           genoType: genoType,
           address: address,
           phoneNumber: phoneNumber,
+          avatar: avatar,
+          role: role,
         },
       }
     );

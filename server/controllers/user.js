@@ -41,12 +41,8 @@ router.post("/login", async (req, res) => {
     };
     const findUser = await user.validate(data);
 
-    if (findUser) {
-      res.status(200).json(
-        JSON.stringify({
-          success: "user validated",
-        })
-      );
+    if (findUser[0]) {
+      res.status(200).json(JSON.stringify(findUser));
     } else {
       res.status(401).json(
         JSON.stringify({

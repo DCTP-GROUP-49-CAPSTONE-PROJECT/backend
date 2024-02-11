@@ -43,7 +43,7 @@ const getAll = async () => {
 const validate = async ({ email, password }) => {
   const isValidUser = await User.findOne({ email: email });
   if (isValidUser) {
-    return await bcrypt.compare(password, isValidUser.password);
+    return [await bcrypt.compare(password, isValidUser.password), isValidUser];
   }
   return false;
 };

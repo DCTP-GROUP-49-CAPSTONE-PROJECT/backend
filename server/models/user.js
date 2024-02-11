@@ -14,6 +14,11 @@ const UserSchema = new Schema(
     genoType: { type: "String" },
     address: { type: "String" },
     phoneNumber: { type: "String" },
+    role: { type: "String" },
+    avatar: {
+      data: Buffer,
+      contentType: String,
+    },
   },
   { timestamps: true }
 );

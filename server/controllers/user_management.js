@@ -9,8 +9,16 @@ const mailUser = require("../services/sendMail");
 const JWT_SECRET = process.env.JWT_SECRET;
 
 router.post("/user/update", async (req, res) => {
-  const { email, gender, weight, bloodGroup, genoType, address, phoneNumber } =
-    req.body;
+  const {
+    email,
+    gender,
+    weight,
+    bloodGroup,
+    genoType,
+    address,
+    phoneNumber,
+    avatar,
+  } = req.body;
   if (
     !email ||
     !gender ||
@@ -29,14 +37,15 @@ router.post("/user/update", async (req, res) => {
     const data = {
       email: email,
       gender: gender,
-      weight,
+      weight: weight,
       bloodGroup: bloodGroup,
       genoType: genoType,
       address: address,
       phoneNumber: phoneNumber,
+      avatar: avatar,
     };
     const updateUser = await user.updateDetails(data);
-    if (updateUser[1]) {
+    if (updateUser[0]) {
       res.status(201).json(JSON.stringify(updateUser));
     } else {
       res.status(400).json(
@@ -95,16 +104,17 @@ router.get("/user/reset-password/:id/:token", async (req, res, _next) => {
   const secret = JWT_SECRET + userFromDB.password;
   try {
     // verify token
-    persistId.saveIdTofile(id);
-    res.redirect(`https://life-plus-webapp.vercel.app`);
+
+    res.redirect(`https://life-plus-webapp.vercel.app/?${id}`);
   } catch (error) {
     console.log(error.message);
     res.send("<strong>link expired or timed out</strong>");
   }
 });
 
-router.post("/user/reset-password", async (req, res, _next) => {
+router.post("/user/reset-password/:id", async (req, res, _next) => {
   const { password, confirmPassword } = req.body;
+  const { id } = req.params;
   try {
     // validate password and password2 should match
     if (password !== confirmPassword) {
@@ -115,11 +125,9 @@ router.post("/user/reset-password", async (req, res, _next) => {
       );
       return;
     }
-    const userId = persistId.readIdFromFile();
 
-    const update = await user.updatePassword(password, userId);
+    const update = await user.updatePassword(password, id);
     if (update) {
-      persistId.removeIdFile();
       res.status(200).json(
         JSON.stringify({
           success: "password reset successfully",

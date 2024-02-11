@@ -27,10 +27,6 @@ app.use(
 app.use("/", require("./controllers/user"));
 app.use("/", require("./controllers/user_management"));
 
-app.listen(SERVER_PORT, () =>
-  console.log("Server listening on port " + SERVER_PORT)
-);
-
 mongoose.set("bufferCommands", false);
 
 (async () => {
@@ -39,6 +35,10 @@ mongoose.set("bufferCommands", false);
       socketTimeoutMS: 1000,
     });
     console.log(`connected to db @ ${process.env.MONGODB_URI}`);
+
+    app.listen(SERVER_PORT, () =>
+      console.log("Server listening on port " + SERVER_PORT)
+    );
   } catch (error) {
     console.log(error);
   }

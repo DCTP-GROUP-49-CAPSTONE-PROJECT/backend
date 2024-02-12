@@ -70,7 +70,7 @@ router.post("/user/forgot-password", async (req, res, _next) => {
       id: userFromDB._id,
     };
     const token = jwt.sign(payload, secret, { expiresIn: "30m" });
-    const link = `http://localhost:3000/user/reset-password/${userFromDB._id}/${token}`;
+    const link = `https://lifeplus-api.onrender.com/user/reset-password/${userFromDB._id}/${token}`;
 
     //Send link to the user's email using node-mailjet module
     mailUser.sendMail(userFromDB.email, userFromDB.fullName, link);
@@ -106,7 +106,7 @@ router.get("/user/reset-password/:id/:token", async (req, res, _next) => {
   try {
     // verify token
 
-    res.redirect(`http://localhost:5173/new-password/?${id}`);
+    res.redirect(`https://life-plus-webapp.vercel.app/new-password/?${id}`);
   } catch (error) {
     console.log(error.message);
     res.send("<strong>link expired or timed out</strong>");

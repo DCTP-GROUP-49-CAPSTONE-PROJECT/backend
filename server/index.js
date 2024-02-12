@@ -29,6 +29,7 @@ app.use(
 app.use("/", require("./controllers/user"));
 app.use("/", require("./controllers/user_management"));
 app.use("/", require("./controllers/provider"));
+app.use("/", require("./controllers/blood_drive"));
 
 mongoose.set("bufferCommands", false);
 

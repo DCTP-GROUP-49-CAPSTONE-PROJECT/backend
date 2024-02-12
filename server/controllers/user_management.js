@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const user = require("../services/user");
-const persistId = require("../helpers/persistUserID");
 const jwt = require("jsonwebtoken");
 const mailUser = require("../services/sendMail");
 
@@ -107,7 +106,7 @@ router.get("/user/reset-password/:id/:token", async (req, res, _next) => {
   try {
     // verify token
 
-    res.redirect(`https://life-plus-webapp.vercel.app/?${id}`);
+    res.redirect(`http://localhost:5173/new-password/?${id}`);
   } catch (error) {
     console.log(error.message);
     res.send("<strong>link expired or timed out</strong>");

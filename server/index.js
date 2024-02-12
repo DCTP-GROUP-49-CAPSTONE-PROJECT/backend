@@ -3,11 +3,13 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
-
+const cors = require("cors");
 const app = express();
 
 const SERVER_PORT = process.env.PORT;
 const MONGODB_URI = process.env.MONGODB_URI;
+
+app.use(cors());
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(

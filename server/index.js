@@ -28,6 +28,7 @@ app.use(
 );
 app.use("/", require("./controllers/user"));
 app.use("/", require("./controllers/user_management"));
+app.use("/", require("./controllers/provider"));
 
 mongoose.set("bufferCommands", false);
 

@@ -1,21 +1,23 @@
-const User = require("../models/user");
+const Provider = require("../models/provider");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
 // creates a new user
-const create = async ({ fullName, email, password }) => {
+const create = async ({ facilityName, email, password, address }) => {
   try {
-    if (await User.findOne({ email: email })) {
+    if (await Provider.findOne({ email: email })) {
       return [false, "user already exists, kindly log in."];
-    }
-    const hash = await bcrypt.hash(password, saltRounds);
-    const user = new User({
-      fullName: fullName,
-      email: email,
-      password: hash,
-    });
-    if (await user.save()) {
-      return [true, user];
+    } else {
+      const hash = await bcrypt.hash(password, saltRounds);
+      const provider = new Provider({
+        facilityName: facilityName,
+        email: email,
+        password: hash,
+        address: address,
+      });
+      if (await provider.save()) {
+        return [true, provider];
+      }
     }
   } catch (err) {
     return [false, err];
@@ -24,31 +26,34 @@ const create = async ({ fullName, email, password }) => {
 
 /* Return user with specified id */
 const getById = async (id) => {
-  const user = await User.findById(id);
-  return user;
+  const provider = await Provider.findById(id);
+  return provider;
 };
 
 /* Return user with specified email */
 const getByEmail = async (email) => {
-  const user = await User.findOne({ email: email });
-  return user;
+  const provider = await Provider.findOne({ email: email });
+  return provider;
 };
 
 /* Return all users */
 const getAll = async () => {
-  return await User.find();
+  return await Provider.find();
 };
 
-// validate user login request
+// validate provider login request
 const validate = async ({ email, password }) => {
-  const isValidUser = await User.findOne({ email: email });
-  if (isValidUser) {
-    return [await bcrypt.compare(password, isValidUser.password), isValidUser];
+  const isValidProvider = await Provider.findOne({ email: email });
+  if (isValidProvider) {
+    return [
+      await bcrypt.compare(password, isValidProvider.password),
+      isValidProvider,
+    ];
   }
   return false;
 };
 
-// updates user details
+// updates provider details
 const updateDetails = async ({
   email,
   gender,
@@ -89,12 +94,12 @@ const updateDetails = async ({
   }
 };
 
-// changes user password
+// changes provider password
 const updatePassword = async (password, userId) => {
   try {
     const hash = await bcrypt.hash(password, saltRounds);
 
-    const update = await User.updateOne(
+    const update = await Provider.updateOne(
       { _id: userId },
       {
         $set: {

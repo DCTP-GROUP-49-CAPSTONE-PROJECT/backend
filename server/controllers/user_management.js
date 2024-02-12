@@ -17,7 +17,6 @@ router.post("/user/update", async (req, res) => {
     address,
     phoneNumber,
     avatar,
-    role,
   } = req.body;
   if (
     !email ||
@@ -43,7 +42,7 @@ router.post("/user/update", async (req, res) => {
       address: address,
       phoneNumber: phoneNumber,
       avatar: avatar,
-      role: role,
+
     };
     const updateUser = await user.updateDetails(data);
     if (updateUser[0]) {

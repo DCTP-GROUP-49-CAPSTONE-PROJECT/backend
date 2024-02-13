@@ -71,7 +71,6 @@ const updateDetails = async ({
           address: address,
           phoneNumber: phoneNumber,
           avatar: avatar,
-          role: role,
         },
       }
     );

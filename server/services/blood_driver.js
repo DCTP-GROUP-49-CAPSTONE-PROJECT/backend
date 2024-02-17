@@ -1,10 +1,10 @@
 const Drive = require('../models/blood_drive')
-const User = require('../models/user')
+const Provider = require('../models/provider')
 
 // creates a new Blood Drive
 const createDrive = async ({title, tokenAmount, startDate, endDate, userId}) => {
     try {
-        if (!await User.findOne({ _id: userId })) {
+        if (!await Provider.findOne({ _id: userId })) {
             return [false, "user does not exists."];
         }
         const drive = new Drive({

@@ -53,6 +53,8 @@ app.use("/", require("./controllers/provider"));
 app.use("/", require("./controllers/blood_drive"));
 const passportSetup = require("./config/passport-setup");
 app.use("/auth", require("./controllers/auth-routes"));
+app.use("/", require("./controllers/schedule"));
+
 mongoose.set("bufferCommands", false);
 
 (async () => {

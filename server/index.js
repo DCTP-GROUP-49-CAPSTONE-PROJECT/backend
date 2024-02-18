@@ -4,8 +4,14 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const cors = require("cors");
+const passport = require("passport");
+const session = require("express-session");
+const MongoDBStore = require("connect-mongodb-session")(session);
 const app = express();
-
+const store = new MongoDBStore({
+  uri: process.env.MONGODB_URI,
+  collection: "mySessions",
+});
 const SERVER_PORT = process.env.PORT;
 const MONGODB_URI = process.env.MONGODB_URI;
 
@@ -26,11 +32,27 @@ app.use(
     extended: true,
   })
 );
+
+app.use(
+  session({
+    secret: "secret",
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+    },
+    store,
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+// initialize passport
+app.use(passport.initialize());
+app.use(passport.session());
 app.use("/", require("./controllers/user"));
 app.use("/", require("./controllers/user_management"));
 app.use("/", require("./controllers/provider"));
 app.use("/", require("./controllers/blood_drive"));
-
+const passportSetup = require("./config/passport-setup");
+app.use("/auth", require("./controllers/auth-routes"));
 mongoose.set("bufferCommands", false);
 
 (async () => {

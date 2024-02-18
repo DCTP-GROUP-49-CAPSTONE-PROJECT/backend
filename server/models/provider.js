@@ -7,6 +7,11 @@ const ProviderSchema = new Schema(
     email: { type: "String", unique: true },
     password: { type: "String" },
     address: { type: "String" },
+    googleId: { type: "String" },
+    thumbnail: {
+      data: Buffer,
+      contentType: String,
+    },
   },
   { timestamps: true }
 );

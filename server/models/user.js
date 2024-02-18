@@ -12,7 +12,11 @@ const UserSchema = new Schema(
     genoType: { type: "String" },
     address: { type: "String" },
     phoneNumber: { type: "String" },
-    role: { type: "String" },
+    googleId: { type: "String" },
+    thumbnail: {
+      data: Buffer,
+      contentType: String,
+    },
     avatar: {
       data: Buffer,
       contentType: String,

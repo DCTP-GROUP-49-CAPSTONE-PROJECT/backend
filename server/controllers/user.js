@@ -67,8 +67,8 @@ router.get("/user", async (req, res) => {
       error: "userId required",
     });
   }
-  const user = await user.getById(userid);
-  res.status(200).json(user);
+  const getUser = await user.getById(userid);
+  res.status(200).json(getUser);
 });
 
 module.exports = router;

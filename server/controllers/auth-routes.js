@@ -35,7 +35,7 @@ router.get("/google/redirect", function (req, res, next) {
           return;
         } else {
           req.session.user = req.user;
-          res.status(200).json([true, user]);
+          res.redirect(`http://localhost:5173/dashboard?${user._id}`);
           return;
         }
       });

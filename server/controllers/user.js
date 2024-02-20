@@ -3,6 +3,13 @@ const router = express.Router();
 
 const user = require("../services/user");
 
+router.get("/", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    server: "alive",
+  });
+});
+
 router.post("/signup", async (req, res) => {
   const { fullName, email, password } = req.body;
 
@@ -51,6 +58,17 @@ router.post("/login", async (req, res) => {
       );
     }
   }
+});
+
+router.get("/user", async (req, res) => {
+  const { userid } = req.query;
+  if (!userid) {
+    res.status(401).json({
+      error: "userId required",
+    });
+  }
+  const user = await user.getById(userid);
+  res.status(200).json(user);
 });
 
 module.exports = router;

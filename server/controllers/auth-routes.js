@@ -35,7 +35,9 @@ router.get("/google/redirect", function (req, res, next) {
           return;
         } else {
           req.session.user = req.user;
-          res.redirect(`http://localhost:5173/dashboard?${user._id}`);
+          res.redirect(
+            `https://life-plus-webapp.vercel.app/dashboard?${user._id}`
+          );
           return;
         }
       });

@@ -31,6 +31,8 @@ app.use("/", require("./controllers/user_management"));
 app.use("/", require("./controllers/provider"));
 app.use("/", require("./controllers/blood_drive"));
 app.use("/", require("./controllers/schedule"));
+app.use("/", require("./controllers/discussion"));
+app.use("/", require("./controllers/comment"));
 
 mongoose.set("bufferCommands", false);
 

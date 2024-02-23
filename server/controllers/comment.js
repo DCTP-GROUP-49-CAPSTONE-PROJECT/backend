@@ -25,9 +25,18 @@ router.post("/create-comment", async (req, res) => {
     }
 });
 
-router.get("/all-comment", async (req, res, next) => {
+router.get("/all-comments", async (req, res, next) => {
   try {
     const comments = await comment.getAllComment();
+    res.status(201).json(comments);
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+router.get("/all-comment/:discussionID", async (req, res, next) => {
+  try {
+    const comments = await comment.getAllCommentsByDiscussion(req.params.discussionID);
     res.status(201).json(comments);
   } catch (error) {
     console.log(error)

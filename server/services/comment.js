@@ -33,6 +33,10 @@ const getAllComment = async () => {
     return await Comment.find();
 };
 
+const getAllCommentsByDiscussion = async (discussionID) => {
+    return await Comment.find({discussion_id: discussionID});
+};
+
 module.exports = {
     createComment,
     getCommentById,

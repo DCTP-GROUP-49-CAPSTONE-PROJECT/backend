@@ -5,6 +5,7 @@ const DiscussionSchema = new Schema(
   {
     title: { type: "String", required: true },
     posted_by: { type: "String", required: true },
+    content: {type: "String", require: true },
     status: { type: "String", required: true, default:"Active" }
   },
   { timestamps: true }

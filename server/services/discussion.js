@@ -4,11 +4,12 @@ const User = require('../models/user')
 const Discussion = require('../models/discussion')
 
 // creates a new Discussion
-const createDiscussion = async ({title, posted_by}) => {
+const createDiscussion = async ({title, posted_by, content}) => {
     try {
         const discussion = new Discussion({
             title: title,
-            posted_by: posted_by
+            posted_by: posted_by,
+            content: content
           });
           if (await discussion.save()) {
             return [true, discussion];
@@ -36,7 +37,7 @@ const getAllDiscussion = async () => {
 };
 
 // updates Discussion details
-const updateDiscussionDetails = async ({title, posted_by,discussion_id}) => {
+const updateDiscussionDetails = async ({title, posted_by, content, discussion_id}) => {
     try {
         if (!await Discussion.findOne({ _id:discussion_id, posted_by: posted_by })) {
             return [false, "Unauthorized User."];
@@ -46,7 +47,8 @@ const updateDiscussionDetails = async ({title, posted_by,discussion_id}) => {
         {
           $set: {
             title: title,
-            posted_by: posted_by
+            posted_by: posted_by,
+            content: content
           },
         }
       );

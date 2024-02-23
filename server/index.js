@@ -54,6 +54,8 @@ app.use("/", require("./controllers/blood_drive"));
 const passportSetup = require("./config/passport-setup");
 app.use("/auth", require("./controllers/auth-routes"));
 app.use("/", require("./controllers/schedule"));
+app.use("/", require("./controllers/discussion"));
+app.use("/", require("./controllers/comment"));
 
 mongoose.set("bufferCommands", false);
 

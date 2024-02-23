@@ -36,7 +36,7 @@ const getDriveByUserId = async (id) => {
   
 /* Return all Blood Drive */
 const getAllDrive = async () => {
-    return await Drive.find().populate('userId','-password');
+    return await Drive.find().populate('userId', '-password');
 };
 
 // updates user details

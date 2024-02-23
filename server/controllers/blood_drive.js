@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const mongoose = require("mongoose");
+
 
 const drive = require("../services/blood_driver");
 
@@ -16,8 +18,9 @@ router.post("/create-blood-drive", async (req, res) => {
       tokenAmount: tokenAmount,
       startDate: startDate,
       endDate: endDate,
-      userId: userId,
+      userId: new mongoose.Types.ObjectId(userId),
     };
+
     const newDrive = await drive.createDrive(data);
     if (newDrive) {
       res.status(201).json(newDrive);

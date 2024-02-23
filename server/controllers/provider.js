@@ -53,5 +53,27 @@ router.post("/provider/login", async (req, res) => {
     }
   }
 });
+router.post("/provider/get-single", async (req, res) => {
+  const { providerId } = req.query;
+  if (!providerId) {
+    res.status(401).json(
+      JSON.stringify({
+        error: "proivderId must not be empty",
+      })
+    );
+  } else {
+    const findProvider = await provider.getById(providerId);
+
+    if (findProvider) {
+      res.status(200).json(findProvider);
+    } else {
+      res.status(401).json(
+        JSON.stringify({
+          error: "Provider does not exist",
+        })
+      );
+    }
+  }
+});
 
 module.exports = router;

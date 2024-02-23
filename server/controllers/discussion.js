@@ -27,7 +27,7 @@ router.post("/create-discussion", async (req, res) => {
 
 router.get("/all-discussion", async (req, res, next) => {
   try {
-    const discussions = await discussion.getAllDiscussion().sort({"createdAt": "desc"});
+    const discussions = await discussion.getAllDiscussion();
     res.status(201).json(discussions);
   } catch (error) {
     console.log(error)

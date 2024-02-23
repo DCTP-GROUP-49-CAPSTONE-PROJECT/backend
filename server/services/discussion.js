@@ -33,7 +33,7 @@ const getDiscussionByUserId = async (id) => {
   
 /* Return all Discussion */
 const getAllDiscussion = async () => {
-    return await Discussion.find();
+    return await Discussion.find().sort({"createdAt": "desc"});
 };
 
 // updates Discussion details

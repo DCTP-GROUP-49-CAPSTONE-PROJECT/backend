@@ -4,16 +4,17 @@ const router = express.Router();
 const discussion = require("../services/discussion");
 
 router.post("/create-discussion", async (req, res) => {
-    const { title, posted_by } = req.body;
+    const { title, posted_by, content } = req.body;
   
-    if (!title || !posted_by) {
+    if (!title || !posted_by || !content) {
       res.status(400).json({
         error: "one or more field is not filled",
       });
     } else {
       const data = {
         title: title,
-        posted_by: posted_by
+        posted_by: posted_by,
+        content: content
       };
       const newDiscussion = await discussion.createDiscussion(data);
       if (newDiscussion) {
@@ -56,8 +57,8 @@ router.get("/discussions-by-user", async (req,res,next) => {
 router.put("/update-discussion", async (req,res) => {
   try {
     const { discussion_id } = req.query
-    const { title, posted_by } = req.body;
-    if (!title || !posted_by) {
+    const { title, posted_by, content } = req.body;
+    if (!title || !posted_by || !content) {
       res.status(400).json({
         error: "one or more field is not filled",
       });
@@ -65,6 +66,7 @@ router.put("/update-discussion", async (req,res) => {
       const data = {
         title: title,
         posted_by: posted_by,
+        content: content,
         discussion_id: discussion_id
       };
       const updateDiscussion = await discussion.updateDiscussionDetails(data);

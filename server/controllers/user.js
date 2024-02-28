@@ -50,6 +50,12 @@ router.post("/login", async (req, res) => {
 
     if (findUser[0]) {
       res.status(200).json(JSON.stringify(findUser));
+    } else if (!findUser[0]) {
+      res.status(401).json(
+        JSON.stringify({
+          error: findUser[1],
+        })
+      );
     } else {
       res.status(401).json(
         JSON.stringify({

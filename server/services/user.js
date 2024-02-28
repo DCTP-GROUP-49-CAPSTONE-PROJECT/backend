@@ -42,6 +42,12 @@ const getAll = async () => {
 // validate user login request
 const validate = async ({ email, password }) => {
   const isValidUser = await User.findOne({ email: email });
+  if (isValidUser.googleId) {
+    return [
+      false,
+      "This account was created with google, kindly log in with google or reset password to create a new password",
+    ];
+  }
   if (isValidUser) {
     return [await bcrypt.compare(password, isValidUser.password), isValidUser];
   }
@@ -70,7 +76,8 @@ const updateDetails = async ({
           genoType: genoType,
           address: address,
           phoneNumber: phoneNumber,
-          avatar: avatar,
+          accountUpdated: true,
+          avatar: avatar.avatar,
         },
       }
     );
@@ -111,6 +118,10 @@ const updatePassword = async (password, userId) => {
   }
 };
 
+const deleteOne = async (email) => {
+  return User.deleteOne({ email: email });
+};
+
 module.exports = {
   create,
   validate,
@@ -119,4 +130,5 @@ module.exports = {
   getByEmail,
   getAll,
   updatePassword,
+  deleteOne,
 };

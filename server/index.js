@@ -47,8 +47,9 @@ app.use(
 // initialize passport
 app.use(passport.initialize());
 app.use(passport.session());
-app.use("/", require("./controllers/user"));
+app.use(express.static(__dirname));
 app.use("/", require("./controllers/user_management"));
+app.use("/", require("./controllers/user"));
 app.use("/", require("./controllers/provider"));
 app.use("/", require("./controllers/blood_drive"));
 const passportSetup = require("./config/passport-setup");
@@ -62,7 +63,7 @@ mongoose.set("bufferCommands", false);
 (async () => {
   try {
     await mongoose.connect(MONGODB_URI, {
-      socketTimeoutMS: 1000,
+      socketTimeoutMS: 40000,
     });
     console.log(`connected to db @ ${process.env.MONGODB_URI}`);
 

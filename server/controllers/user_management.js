@@ -2,37 +2,92 @@ const router = require("express").Router();
 const user = require("../services/user");
 const jwt = require("jsonwebtoken");
 const mailUser = require("../services/sendMail");
+const { imageFilter } = require("./helpers");
+const multer = require("multer");
+const fs = require("fs");
+const path = require("path");
 
-// implementation copied from https://github.com/trulymittal/forgot-password/blob/master/app.js
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    fs.mkdir("./uploads/", (err) => {
+      cb(null, "./uploads/");
+    });
+  },
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      new Date().toISOString().replace(/:/g, "-") + "-" + file.originalname
+    );
+  },
+});
+const maxSize = 1 * 1024 * 1024; // for 1MB
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
+let upload = multer({
+  storage: storage,
+  fileFilter: imageFilter,
+  limits: maxSize,
+}).single("avatar");
 router.post("/user/update", async (req, res) => {
-  const {
-    email,
-    gender,
-    weight,
-    bloodGroup,
-    genoType,
-    address,
-    phoneNumber,
-    avatar,
-  } = req.body;
-  if (
-    !email ||
-    !gender ||
-    !weight ||
-    !bloodGroup ||
-    !genoType ||
-    !address ||
-    !phoneNumber
-  ) {
-    res.status(401).json(
-      JSON.stringify({
-        error: "ensure all fields are filled",
-      })
-    );
-  } else {
+  upload(req, res, async (err) => {
+    if (err instanceof multer.MulterError) {
+      // A Multer error occurred when uploading.
+      return res.status(400).json({
+        error: "uanable to upload try again",
+      });
+    } else if (err) {
+      // An unknown error occurred when uploading.
+      return res.status(401).json({
+        error: err.message,
+      });
+    }
+    const {
+      email,
+      gender,
+      weight,
+      bloodGroup,
+      genoType,
+      address,
+      phoneNumber,
+    } = req.body;
+    if (
+      !email ||
+      !gender ||
+      !weight ||
+      !bloodGroup ||
+      !genoType ||
+      !address ||
+      !phoneNumber
+    ) {
+      return res.status(401).json(
+        JSON.stringify({
+          error: "ensure all fields are filled",
+        })
+      );
+    }
+
+    if (req.file && req.file.size > maxSize) {
+      return res.status(401).json(
+        JSON.stringify({
+          error: `upload image must not exceed ${maxSize} got ${req.file.size}`,
+        })
+      );
+    }
+
+    // getting the original img data in case user did not upload new one
+    const userFromDb = await user.getByEmail(email);
+    const originalImgData = userFromDb.avatar.data;
+    // saving image to an object to be uploaded to db if upload is successful
+    const imgObj = {
+      avatar: {
+        data: req.file
+          ? fs.readFileSync(path.resolve("./uploads/" + req.file.filename))
+          : originalImgData || fs.readFileSync("./public/assets/avatar2.jpg"),
+        contentType: req.file ? req.file.mimetype : "image/png",
+      },
+    };
+
     const data = {
       email: email,
       gender: gender,
@@ -41,20 +96,19 @@ router.post("/user/update", async (req, res) => {
       genoType: genoType,
       address: address,
       phoneNumber: phoneNumber,
-      avatar: avatar,
-
+      avatar: imgObj,
     };
     const updateUser = await user.updateDetails(data);
     if (updateUser[0]) {
-      res.status(201).json(JSON.stringify(updateUser));
+      return res.status(201).json(JSON.stringify(updateUser));
     } else {
-      res.status(400).json(
+      return res.status(400).json(
         JSON.stringify({
           error: "an error occured",
         })
       );
     }
-  }
+  });
 });
 
 router.post("/user/forgot-password", async (req, res, _next) => {
@@ -143,6 +197,14 @@ router.post("/user/reset-password/:id", async (req, res, _next) => {
   } catch (error) {
     console.log(error);
   }
+});
+
+router.delete("/user/delete", async (req, res) => {
+  const { email } = req.body;
+  const deletUser = user.deleteOne(email);
+  res.status(200).json({
+    ok: "user removed",
+  });
 });
 
 module.exports = router;

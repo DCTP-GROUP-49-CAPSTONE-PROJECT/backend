@@ -11,6 +11,7 @@ const UserSchema = new Schema(
     bloodGroup: { type: "String" },
     genoType: { type: "String" },
     address: { type: "String" },
+    accountUpdated: { type: "Boolean", default: false },
     phoneNumber: { type: "String" },
     googleId: { type: "String" },
     thumbnail: {

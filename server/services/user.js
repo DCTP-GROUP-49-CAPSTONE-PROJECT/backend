@@ -118,10 +118,6 @@ const updatePassword = async (password, userId) => {
   }
 };
 
-const deleteOne = async (email) => {
-  return User.deleteOne({ email: email });
-};
-
 module.exports = {
   create,
   validate,

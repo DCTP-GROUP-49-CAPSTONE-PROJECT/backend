@@ -57,6 +57,7 @@ app.use("/auth", require("./controllers/auth-routes"));
 app.use("/", require("./controllers/schedule"));
 app.use("/", require("./controllers/discussion"));
 app.use("/", require("./controllers/comment"));
+app.use("/", require("./controllers/like_comment"));
 
 mongoose.set("bufferCommands", false);
 

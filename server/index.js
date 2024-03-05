@@ -53,6 +53,7 @@ app.use("/", require("./controllers/user"));
 app.use("/", require("./controllers/provider"));
 app.use("/", require("./controllers/blood_drive"));
 const passportSetup = require("./config/passport-setup");
+const User = require("./models/user");
 app.use("/auth", require("./controllers/auth-routes"));
 app.use("/", require("./controllers/schedule"));
 app.use("/", require("./controllers/discussion"));

@@ -42,13 +42,12 @@ const getAll = async () => {
 // validate user login request
 const validate = async ({ email, password }) => {
   const isValidUser = await User.findOne({ email: email });
-  if (isValidUser.googleId) {
+  if (isValidUser && isValidUser.googleId) {
     return [
       "google user",
       "This account was created with google, kindly log in with google or reset password to create a new password",
     ];
-  }
-  if (isValidUser) {
+  } else if (isValidUser) {
     return [await bcrypt.compare(password, isValidUser.password), isValidUser];
   }
   return false;

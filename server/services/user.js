@@ -44,7 +44,7 @@ const validate = async ({ email, password }) => {
   const isValidUser = await User.findOne({ email: email });
   if (isValidUser.googleId) {
     return [
-      false,
+      "google user",
       "This account was created with google, kindly log in with google or reset password to create a new password",
     ];
   }

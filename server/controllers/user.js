@@ -50,7 +50,7 @@ router.post("/login", async (req, res) => {
 
     if (findUser[0]) {
       res.status(200).json(JSON.stringify(findUser));
-    } else if (!findUser[0]) {
+    } else if (findUser[0] === "google user") {
       res.status(401).json(
         JSON.stringify({
           error: findUser[1],

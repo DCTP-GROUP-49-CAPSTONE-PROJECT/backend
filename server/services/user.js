@@ -126,5 +126,4 @@ module.exports = {
   getByEmail,
   getAll,
   updatePassword,
-  deleteOne,
 };

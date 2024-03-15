@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 
-
 const drive = require("../services/blood_driver");
 
 router.post("/create-blood-drive", async (req, res) => {
@@ -101,7 +100,7 @@ router.put("/update-blood-drive", async (req, res) => {
 router.delete("/delete-blood-drive", async (req, res) => {
   try {
     const { driveId } = req.query;
-    if (!id) {
+    if (!driveId) {
       res.status(401).json([false, "drive id required"]);
       return;
     }
